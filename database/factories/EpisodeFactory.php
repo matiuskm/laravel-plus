@@ -18,6 +18,7 @@ class EpisodeFactory extends Factory
     {
         return [
             'title' => fake()->sentence,
+            'duration' => fake()->numberBetween(1, 60),
         ];
     }
 }

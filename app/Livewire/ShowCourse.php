@@ -29,26 +29,53 @@ class ShowCourse extends Component implements HasInfolists, HasForms
         return $infolist
             ->record($this->course)
             ->schema([
-                Infolists\Components\Section::make()
-                    ->schema([
-                        Infolists\Components\TextEntry::make('title'),
-                        Infolists\Components\TextEntry::make('tagline'),
-                        Infolists\Components\TextEntry::make('description'),
-                        Infolists\Components\TextEntry::make('instructor.name'),
-                        Infolists\Components\TextEntry::make('episodes_count')
+                Infolists\Components\TextEntry::make('title')
                             ->label('')
-                            ->formatStateUsing(fn ($state) => "$state episodes"),
-                        Infolists\Components\TextEntry::make('formatted_duration')
-                            ->label(''),
-                        Infolists\Components\TextEntry::make('created_at')
-                            ->since(),
-                        Infolists\Components\RepeatableEntry::make('episodes')
+                            ->size('text-3xl')
+                            ->weight('font-bold')
+                            ->columnSpanFull(),
+                Infolists\Components\Grid::make(3)
+                    ->schema([
+                    Infolists\Components\Section::make([
+                        Infolists\Components\Fieldset::make('')
+                            ->columns(5)
+                            ->columnSpan(1)
                             ->schema([
-                                Infolists\Components\TextEntry::make('title'),
-                                Infolists\Components\TextEntry::make('duration')
-                                    ->formatStateUsing(fn ($state) => "$state mins"),
-                            ]),
-                    ]),
+                                Infolists\Components\TextEntry::make('episodes_count')
+                                    ->label('')
+                                    ->icon('heroicon-o-film')
+                                    ->formatStateUsing(fn ($state) => "$state episodes"),
+                                Infolists\Components\TextEntry::make('formatted_duration')
+                                    ->label('')
+                                    ->icon('heroicon-o-clock'),
+                                Infolists\Components\TextEntry::make('created_at')
+                                    ->label('')
+                                    ->icon('heroicon-o-calendar')
+                                    ->since(),
+                            ])
+                            ->extraAttributes(['class' => 'border-none !p-0']),
+                        Infolists\Components\TextEntry::make('description')
+                            ->label('Overview'),
+                        Infolists\Components\TextEntry::make('tagline')
+                            ->label('')
+                            ->columnSpanFull(),
+                        Infolists\Components\TextEntry::make('instructor.name')
+                            ->label('Your teacher')
+                            ->columnSpanFull(),
+                    ])->columnSpan(2),
+                    Infolists\Components\Section::make([
+                        Infolists\Components\RepeatableEntry::make('episodes')
+                        ->schema([
+                            Infolists\Components\TextEntry::make('title')
+                                ->label('')
+                                ->icon('heroicon-o-play-circle'),
+                            Infolists\Components\TextEntry::make('duration')
+                                ->label('')
+                                ->formatStateUsing(fn ($state) => "$state mins"),
+                        ]),
+                    ])
+                    ->columnSpan(1),
+                ]),
             ]);
     }
 
