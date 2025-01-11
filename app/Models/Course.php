@@ -20,4 +20,21 @@ class Course extends Model
     public function episodes(): HasMany {
         return $this->hasMany(Episode::class);
     }
+
+    public function getFormattedDurationAttribute(): string
+    {
+        $totalDuration = $this->episodes->sum('duration');
+        $hours = intdiv($totalDuration, 60);
+        $minutes = $totalDuration % 60;
+
+        $result = [];
+        if ($hours > 0) {
+            $result[] = $hours . ' hr' . ($hours > 1 ? 's' : '');
+        }
+        if ($minutes > 0 || $hours === 0) {
+            $result[] = $minutes . ' min' . ($minutes > 1 ? 's' : '');
+        }
+
+        return implode(' ', $result);
+    }
 }

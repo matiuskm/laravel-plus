@@ -15,4 +15,20 @@ class Episode extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function getFormattedDurationAttribute(): string
+    {
+        $hours = intdiv($this->duration, 60);
+        $minutes = $this->duration % 60;
+
+        $result = [];
+        if ($hours > 0) {
+            $result[] = $hours . ' hr' . ($hours > 1 ? 's' : '');
+        }
+        if ($minutes > 0 || $hours === 0) {
+            $result[] = $minutes . ' min' . ($minutes > 1 ? 's' : '');
+        }
+
+        return implode(' ', $result);
+    }
 }

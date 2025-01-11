@@ -32,3 +32,41 @@ it('has the episodes count', function () {
 
     expect($course->episodes_count)->toBe(10);
 });
+
+it('has the total duration of all episodes', function () {
+    $courseA = App\Models\Course::factory()
+        ->for(App\Models\User::factory()->instructor(), 'instructor')
+        ->has(App\Models\Episode::factory()->state(['duration' => 150]), 'episodes')
+        ->create();
+
+    $courseB = App\Models\Course::factory()
+        ->for(App\Models\User::factory()->instructor(), 'instructor')
+        ->has(App\Models\Episode::factory()->state(['duration' => 61]), 'episodes')
+        ->create();
+
+    $courseC = App\Models\Course::factory()
+        ->for(App\Models\User::factory()->instructor(), 'instructor')
+        ->has(App\Models\Episode::factory()->state(['duration' => 60]), 'episodes')
+        ->create();
+
+    $courseD = App\Models\Course::factory()
+        ->for(App\Models\User::factory()->instructor(), 'instructor')
+        ->has(App\Models\Episode::factory()->state(['duration' => 15]), 'episodes')
+        ->create();
+
+    $courseE = App\Models\Course::factory()
+        ->for(App\Models\User::factory()->instructor(), 'instructor')
+        ->has(App\Models\Episode::factory()->state(['duration' => 1]), 'episodes')
+        ->create();
+
+    $courseF = App\Models\Course::factory()
+        ->for(App\Models\User::factory()->instructor(), 'instructor')
+        ->create();
+
+    expect($courseA->formatted_duration)->toBe('2 hrs 30 mins');
+    expect($courseB->formatted_duration)->toBe('1 hr 1 min');
+    expect($courseC->formatted_duration)->toBe('1 hr');
+    expect($courseD->formatted_duration)->toBe('15 mins');
+    expect($courseE->formatted_duration)->toBe('1 min');
+    expect($courseF->formatted_duration)->toBe('0 min');
+});
