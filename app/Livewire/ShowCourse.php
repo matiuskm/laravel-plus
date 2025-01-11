@@ -18,6 +18,12 @@ class ShowCourse extends Component implements HasInfolists, HasForms
 
     public Course $course;
 
+    public function mount(Course $course)
+    {
+        $this->course = $course;
+        $this->course->loadCount('episodes');
+    }
+
     public function courseInfolist(Infolist $infolist): Infolist
     {
         return $infolist
@@ -27,6 +33,12 @@ class ShowCourse extends Component implements HasInfolists, HasForms
                     ->schema([
                         Infolists\Components\TextEntry::make('title'),
                         Infolists\Components\TextEntry::make('tagline'),
+                        Infolists\Components\TextEntry::make('description'),
+                        Infolists\Components\TextEntry::make('instructor.name'),
+                        Infolists\Components\TextEntry::make('created_at')
+                        ->since(),
+                        Infolists\Components\TextEntry::make('episodes_count')
+                            ->formatStateUsing(fn ($state) => "$state episodes"),
                     ]),
             ]);
     }
