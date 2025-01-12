@@ -19,6 +19,8 @@ class EpisodeFactory extends Factory
         return [
             'title' => fake()->sentence,
             'duration' => fake()->numberBetween(1, 60),
+            'vimeo_id' => fake()->numerify('#########'),
+            'overview' => fake()->paragraph(5),
         ];
     }
 }
